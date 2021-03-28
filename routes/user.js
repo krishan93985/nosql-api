@@ -45,4 +45,34 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//update user password using unique username
+router.put("/update",async (req,res) => {
+  const {Username,Password} = req.body;
+  try{
+  if(!Username || !Password) assert(false);
+  
+  const updateResponse = await User.updateOne({Username},{$set:{Password}});
+  console.log(updateResponse);
+  res.status(200).json({status:1});
+  } catch(err){
+    console.error(err);
+    res.status(400).json({status:2})
+  }
+})
+
+//removing user account using unique username
+router.delete('/delete',async (req,res) => {
+  const {Username} = req.body;
+  console.log("yes")
+  try{
+  if(!Username) assert(false);
+  const deleteResponse = await User.deleteOne({Username});
+  console.log(deleteResponse);
+  res.status(200).json({status:1});
+  } catch(err){
+    console.error(err);
+    res.status(400).json({status:2});
+  }
+})
+
 module.exports = router;
